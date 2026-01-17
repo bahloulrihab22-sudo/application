@@ -9,6 +9,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late AnimationController _controller;
+  late Animation<double> _logoAnimation;
   late Animation<double> _titleAnimation;
   late Animation<double> _subtitleAnimation;
   late Animation<double> _buttonsAnimation;
@@ -22,18 +23,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       duration: const Duration(seconds: 2),
     );
 
-    // stagger animations using intervals
+    _logoAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.3, curve: Curves.easeOut),
+      ),
+    );
+
     _titleAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.4, curve: Curves.easeOut),
+        curve: const Interval(0.2, 0.5, curve: Curves.easeOut),
       ),
     );
 
     _subtitleAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.3, 0.7, curve: Curves.easeOut),
+        curve: const Interval(0.4, 0.7, curve: Curves.easeOut),
       ),
     );
 
@@ -53,44 +60,47 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  // Colors
-  static const Color burgundy = Color(0xFF800020);
-  static const Color champagne = Color(0xFFF7E7CE);
-  static const Color warmWhite = Color(0xFFFAFAFA);
-  static const Color charcoal = Color(0xFF2E2E2E);
-  static const Color softGold = Color(0xFFC9A24D);
+  // Nouvelle palette de couleurs pour l'app
+  static const Color primaryColor = Color(0xFFE91E63); // Rose vif
+  static const Color secondaryColor = Color(0xFFFFC1E3); // Rose clair
+  static const Color backgroundColor = Color(0xFFFFFFFF); // Blanc pur
+  static const Color textColor = Color(0xFF333333); // Gris foncé
+  static const Color accentColor = Color(0xFFFF4081); // Accent rose
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: warmWhite,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Decorative circle
+              // Logo / Icon
               FadeTransition(
-                opacity: _titleAnimation,
-                child: Container(
-                  height: 120,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    color: champagne,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: burgundy.withOpacity(0.25),
-                        blurRadius: 15,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.favorite,
-                    color: Color(0xFF800020),
-                    size: 55,
+                opacity: _logoAnimation,
+                child: ScaleTransition(
+                  scale: _logoAnimation,
+                  child: Container(
+                    height: 120,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: secondaryColor,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: primaryColor.withOpacity(0.25),
+                          blurRadius: 15,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.favorite,
+                      color: primaryColor,
+                      size: 55,
+                    ),
                   ),
                 ),
               ),
@@ -100,13 +110,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               // Title
               FadeTransition(
                 opacity: _titleAnimation,
-                child: const Text(
+                child: Text(
                   "Married Couples",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: burgundy,
+                    color: primaryColor,
                     letterSpacing: 1.2,
                   ),
                 ),
@@ -122,7 +132,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
-                    color: charcoal.withOpacity(0.7),
+                    color: textColor.withOpacity(0.7),
                   ),
                 ),
               ),
@@ -138,7 +148,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: burgundy,
+                      backgroundColor: primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
@@ -148,7 +158,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       "Sign In",
                       style: TextStyle(
                         fontSize: 18,
-                        color: warmWhite,
+                        color: backgroundColor,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -167,7 +177,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   child: OutlinedButton(
                     onPressed: () {},
                     style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: softGold, width: 2),
+                      side: const BorderSide(color: accentColor, width: 2),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
@@ -176,7 +186,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       "Sign Up",
                       style: TextStyle(
                         fontSize: 18,
-                        color: softGold,
+                        color: accentColor,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
