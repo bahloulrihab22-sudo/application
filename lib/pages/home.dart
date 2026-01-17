@@ -56,7 +56,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           padding: const EdgeInsets.symmetric(horizontal: 28),
           child: Column(
             children: [
-              const SizedBox(height: 60), // espace avant logo
+              const Spacer(flex: 2), // Pushes the logo lower
+
+              // Logo stays lower
               Hero(
                 tag: 'logoHero',
                 child: Image.asset(
@@ -67,65 +69,68 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
               ),
 
-              const SizedBox(height: 60), // espace entre logo et boutons
+              const SizedBox(height: 20),
 
-              // boutons au milieu
-              SlideTransition(
-                position: _slideButtons,
-                child: FadeTransition(
-                  opacity: _fadeButtons,
-                  child: ScaleTransition(
-                    scale: _scaleButtons,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          height: 55,
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: primaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14),
+              // Buttons take remaining space
+              Expanded(
+                flex: 3,
+                child: SlideTransition(
+                  position: _slideButtons,
+                  child: FadeTransition(
+                    opacity: _fadeButtons,
+                    child: ScaleTransition(
+                      scale: _scaleButtons,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            height: 60,
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: primaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                              ),
+                              child: const Text(
+                                "Sign In",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: backgroundColor,
+                                    fontWeight: FontWeight.w600),
                               ),
                             ),
-                            child: const Text(
-                              "Sign In",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: backgroundColor,
-                                  fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(height: 24),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 60,
+                            child: OutlinedButton(
+                              onPressed: () {},
+                              style: OutlinedButton.styleFrom(
+                                side: BorderSide(color: accentColor, width: 2),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14)),
+                              ),
+                              child: Text(
+                                "Sign Up",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: accentColor,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 55,
-                          child: OutlinedButton(
-                            onPressed: () {},
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: accentColor, width: 2),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14)),
-                            ),
-                            child: Text(
-                              "Sign Up",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: accentColor,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
 
-              const Spacer(), // pousse tout le reste en bas (si besoin)
+              const Spacer(flex: 1), // Optional: small space at bottom
             ],
           ),
         ),
