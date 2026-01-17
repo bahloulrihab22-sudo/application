@@ -20,7 +20,7 @@ class _AcceuilState extends State<Acceuil> with SingleTickerProviderStateMixin {
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3), // Splash duration
+      duration: const Duration(seconds: 3),
     );
 
     _scaleAnimation = TweenSequence<double>([
@@ -46,7 +46,6 @@ class _AcceuilState extends State<Acceuil> with SingleTickerProviderStateMixin {
 
     _controller.forward();
 
-    // Navigate to HomePage after splash animation completes
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Navigator.pushReplacement(
@@ -55,10 +54,7 @@ class _AcceuilState extends State<Acceuil> with SingleTickerProviderStateMixin {
             pageBuilder: (_, __, ___) => const HomePage(),
             transitionDuration: const Duration(milliseconds: 1200),
             transitionsBuilder: (_, animation, __, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
+              return FadeTransition(opacity: animation, child: child);
             },
           ),
         );
@@ -98,9 +94,12 @@ class _AcceuilState extends State<Acceuil> with SingleTickerProviderStateMixin {
                   offset: Offset(0, _floatAnimation.value),
                   child: Transform.scale(
                     scale: _scaleAnimation.value,
-                    child: Image.asset(
-                      'assets/pigeon.png',
-                      width: 280,
+                    child: Hero(
+                      tag: 'logoHero', // Hero pour transition vers Home
+                      child: Image.asset(
+                        'assets/pigeon.png',
+                        width: 280,
+                      ),
                     ),
                   ),
                 ),
