@@ -4,35 +4,47 @@ class Acceuil extends StatefulWidget {
   const Acceuil({super.key});
 
   @override
-  _AcceuilState createState() => _AcceuilState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _AcceuilState extends State<Acceuil> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<Acceuil>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _floatAnimation;
   late Animation<double> _scaleAnimation;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _floatAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    // Animation controller
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 5),
     );
 
-    // Float animation: from -50 (start above) to 0 (final position)
-    _floatAnimation = Tween<double>(begin: -50, end: 0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
-    );
+    // Scale: starts small, grows bigger, slight bounce
+    _scaleAnimation = TweenSequence<double>([
+      TweenSequenceItem(
+          tween: Tween(begin: 0.3, end: 1.5)
+              .chain(CurveTween(curve: Curves.elasticOut)),
+          weight: 60),
+      TweenSequenceItem(
+          tween: Tween(begin: 1.5, end: 1.2)
+              .chain(CurveTween(curve: Curves.easeOutBack)),
+          weight: 40),
+    ]).animate(_controller);
 
-    // Optional: slight scale bounce while landing
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.elasticOut),
-    );
+    // Fade in smoothly
+    _fadeAnimation = Tween<double>(begin: 0, end: 1)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
-    // Start animation
+    // Optional subtle float up and down
+    _floatAnimation = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 0, end: -20), weight: 50),
+      TweenSequenceItem(tween: Tween(begin: -20, end: 0), weight: 50),
+    ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
     _controller.forward();
   }
 
@@ -50,11 +62,11 @@ class _AcceuilState extends State<Acceuil> with SingleTickerProviderStateMixin {
         height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFFFFBFB), // soft white
-              Color(0xFFFFC0CB), // soft pink
+              Color(0xFFFFE6F0), // soft pink top
+              Color(0xFFFFC0CB), // deeper pink bottom
             ],
           ),
         ),
@@ -62,13 +74,16 @@ class _AcceuilState extends State<Acceuil> with SingleTickerProviderStateMixin {
           animation: _controller,
           builder: (context, child) {
             return Center(
-              child: Transform.translate(
-                offset: Offset(0, _floatAnimation.value),
-                child: Transform.scale(
-                  scale: _scaleAnimation.value,
-                  child: Image.asset(
-                    'assets/pigeon.png',
-                    width: 280,
+              child: Opacity(
+                opacity: _fadeAnimation.value,
+                child: Transform.translate(
+                  offset: Offset(0, _floatAnimation.value),
+                  child: Transform.scale(
+                    scale: _scaleAnimation.value,
+                    child: Image.asset(
+                      'assets/pigeon.png',
+                      width: 280,
+                    ),
                   ),
                 ),
               ),
