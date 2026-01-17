@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'home.dart';
 
 class Acceuil extends StatefulWidget {
   const Acceuil({super.key});
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  _AcceuilState createState() => _AcceuilState();
 }
 
-class _SplashScreenState extends State<Acceuil>
-    with SingleTickerProviderStateMixin {
+class _AcceuilState extends State<Acceuil> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
@@ -20,32 +20,50 @@ class _SplashScreenState extends State<Acceuil>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 3), // Splash duration
     );
 
-    // Scale: starts small, grows bigger, slight bounce
     _scaleAnimation = TweenSequence<double>([
       TweenSequenceItem(
-          tween: Tween(begin: 0.3, end: 1.5)
-              .chain(CurveTween(curve: Curves.elasticOut)),
-          weight: 60),
+        tween: Tween(begin: 0.3, end: 1.5)
+            .chain(CurveTween(curve: Curves.elasticOut)),
+        weight: 60,
+      ),
       TweenSequenceItem(
-          tween: Tween(begin: 1.5, end: 1.2)
-              .chain(CurveTween(curve: Curves.easeOutBack)),
-          weight: 40),
+        tween: Tween(begin: 1.5, end: 1.2)
+            .chain(CurveTween(curve: Curves.easeOutBack)),
+        weight: 40,
+      ),
     ]).animate(_controller);
 
-    // Fade in smoothly
     _fadeAnimation = Tween<double>(begin: 0, end: 1)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
-    // Optional subtle float up and down
     _floatAnimation = TweenSequence<double>([
       TweenSequenceItem(tween: Tween(begin: 0, end: -20), weight: 50),
       TweenSequenceItem(tween: Tween(begin: -20, end: 0), weight: 50),
     ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
     _controller.forward();
+
+    // Navigate to HomePage after splash animation completes
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => const HomePage(),
+            transitionDuration: const Duration(milliseconds: 1200),
+            transitionsBuilder: (_, animation, __, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -65,8 +83,8 @@ class _SplashScreenState extends State<Acceuil>
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFFFE6F0), // soft pink top
-              Color(0xFFFFC0CB), // deeper pink bottom
+              Color(0xFFFFE6F0),
+              Color(0xFFFFC0CB),
             ],
           ),
         ),
