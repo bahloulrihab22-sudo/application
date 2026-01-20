@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
+import 'Home.dart';
+import '../Widgets/Background_pink.dart'; // <- pink gradient
+import '../Widgets/Logo.dart';
 
 class Acceuil extends StatefulWidget {
   const Acceuil({super.key});
@@ -51,7 +53,7 @@ class _AcceuilState extends State<Acceuil> with SingleTickerProviderStateMixin {
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
-            pageBuilder: (_, __, ___) => const HomePage(),
+            pageBuilder: (_, __, ___) => const Home(),
             transitionDuration: const Duration(milliseconds: 1200),
             transitionsBuilder: (_, animation, __, child) {
               return FadeTransition(opacity: animation, child: child);
@@ -71,19 +73,7 @@ class _AcceuilState extends State<Acceuil> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFFFE6F0),
-              Color(0xFFFFC0CB),
-            ],
-          ),
-        ),
+      body: Background_pink(
         child: AnimatedBuilder(
           animation: _controller,
           builder: (context, child) {
@@ -94,13 +84,7 @@ class _AcceuilState extends State<Acceuil> with SingleTickerProviderStateMixin {
                   offset: Offset(0, _floatAnimation.value),
                   child: Transform.scale(
                     scale: _scaleAnimation.value,
-                    child: Hero(
-                      tag: 'logoHero', // Hero pour transition vers Home
-                      child: Image.asset(
-                        'assets/pigeon.png',
-                        width: 280,
-                      ),
-                    ),
+                    child: Logo(width: 280), // removed const
                   ),
                 ),
               ),
