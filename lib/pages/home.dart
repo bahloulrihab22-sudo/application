@@ -13,6 +13,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late Animation<double> _scaleButtons;
   late Animation<Offset> _slideButtons;
 
+  static const Color primaryColor   = Color(0xFFBFA6D8);
+  static const Color backgroundColor = Color(0xFFF7F2FA);
+  static const Color textColor      = Color(0xFF5E4A6E);
+  static const Color accentColor    = Color(0xFFD8B4E2);
+
   @override
   void initState() {
     super.initState();
@@ -42,11 +47,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  static const Color primaryColor = Color(0xFFFF90B0);
-  static const Color backgroundColor = Color(0xFFFFFBFC);
-  static const Color textColor = Color(0xFF555555);
-  static const Color accentColor = Color(0xFFFF97AD);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,18 +56,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           padding: const EdgeInsets.symmetric(horizontal: 28),
           child: Column(
             children: [
-              const SizedBox(height: 60), // espace avant logo
+              const SizedBox(height: 60),
+
               Hero(
                 tag: 'logoHero',
                 child: Image.asset(
                   'assets/pigeon.png',
-                  width: 160, // logo agrandi
+                  width: 160,
                   height: 160,
-                  fit: BoxFit.cover,
                 ),
               ),
 
-              const Spacer(), // pousse les boutons vers le milieu / bas
+              const Spacer(),
 
               SlideTransition(
                 position: _slideButtons,
@@ -91,13 +91,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             child: const Text(
                               "Sign In",
                               style: TextStyle(
-                                  fontSize: 18,
-                                  color: backgroundColor,
-                                  fontWeight: FontWeight.w600),
+                                fontSize: 18,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 16), // petit espace entre boutons
+                        const SizedBox(height: 16),
                         SizedBox(
                           width: double.infinity,
                           height: 55,
@@ -106,18 +107,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(color: accentColor, width: 2),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14)),
+                                borderRadius: BorderRadius.circular(14),
+                              ),
                             ),
                             child: Text(
                               "Sign Up",
                               style: TextStyle(
-                                  fontSize: 18,
-                                  color: accentColor,
-                                  fontWeight: FontWeight.w600),
+                                fontSize: 18,
+                                color: textColor,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 40), // espace en bas
+                        const SizedBox(height: 40),
                       ],
                     ),
                   ),
