@@ -4,7 +4,7 @@ import '../Widgets/Logo.dart';
 import '../Widgets/White_button.dart';
 import '../Widgets/Return_button.dart';
 import '../Widgets/Transition/Fade.dart';
-import 'Acceuil.dart';
+import 'confirm.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -60,10 +60,12 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
       SnackBar(
         content: Text(
           message,
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
         ),
-        backgroundColor: isError ? const Color.fromARGB(255, 98, 76, 138) : const Color.fromARGB(255, 144, 66, 216),
+        backgroundColor: isError
+            ? const Color.fromARGB(255, 98, 76, 138)
+            : const Color.fromARGB(255, 144, 66, 216),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         margin: const EdgeInsets.all(16),
@@ -176,14 +178,18 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                               }
 
                               showMessage("Bravo! Ton compte est créé 🎉");
-                              Future.delayed(const Duration(milliseconds: 500),
-                                  () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => Acceuil()),
-                                );
-                              });
+
+                              Future.delayed(
+                                const Duration(milliseconds: 500),
+                                () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const Confirm(),
+                                    ),
+                                  );
+                                },
+                              );
                             },
                           ),
                           const SizedBox(height: 40),
